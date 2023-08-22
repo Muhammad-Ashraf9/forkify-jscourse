@@ -1,6 +1,6 @@
 import icons from '../../img/icons.svg';
 import View from './View';
-class SearchResultsView extends View {
+class BookmarksView extends View {
   constructor(parentElement, errorMessage, successMessage) {
     super(parentElement, errorMessage, successMessage);
   }
@@ -29,8 +29,8 @@ class SearchResultsView extends View {
   `;
   }
 }
-export default new SearchResultsView(
-  document.querySelector('.results'),
+export default new BookmarksView(
+  document.querySelector('.bookmarks__list'),
   'No Recipes With This Query 🍴🙈',
   'Recipes Found 😋'
 );

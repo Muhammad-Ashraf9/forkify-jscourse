@@ -30,6 +30,8 @@ export default class View {
   }
 
   render(data) {
+    if (Array.isArray(data) && data.length === 0)
+      return this.renderErrorMessage();
     this.data = data;
     this.clear();
     const markup = this._generateMarkup();
@@ -52,7 +54,7 @@ export default class View {
 
       if (
         !newNode.isEqualNode(currentNode) &&
-        newNode.firstChild.nodeValue.trim() !== '' //trim**
+        newNode.firstChild?.nodeValue.trim() !== '' //trim**
       ) {
         currentNode.textContent = newNode.textContent;
       }

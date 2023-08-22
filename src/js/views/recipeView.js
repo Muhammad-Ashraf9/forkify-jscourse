@@ -1,7 +1,7 @@
 import icons from '../../img/icons.svg';
 import View from './View';
 
-class recipeView extends View {
+class RecipeView extends View {
   constructor(parentElement, errorMessage, successMessage) {
     super(parentElement, errorMessage, successMessage);
   }
@@ -16,6 +16,13 @@ class recipeView extends View {
 
       const updateTo = +btn.dataset.updateTo;
       if (updateTo > 0) handler(updateTo);
+    });
+  }
+  addBookmarkHandler(handler) {
+    this.parentElement.addEventListener('click', e => {
+      const btn = e.target.closest('.btn--bookmark');
+      if (!btn) return;
+      handler();
     });
   }
   //API
@@ -68,9 +75,11 @@ class recipeView extends View {
     <div class="recipe__user-generated">
       
     </div>
-    <button class="btn--round">
+    <button class="btn--round btn--bookmark">
       <svg class="">
-        <use href="${icons}#icon-bookmark-fill"></use>
+        <use href="${icons}#icon-bookmark${
+      this.data.bookmarked === true ? '-fill' : ''
+    }"></use>
       </svg>
     </button>
   </div>
@@ -122,7 +131,7 @@ class recipeView extends View {
       .join('');
   }
 }
-export default new recipeView(
+export default new RecipeView(
   document.querySelector('.recipe'),
   'Recipe Not Found  🍴🙈',
   'Recipe Found 😋'

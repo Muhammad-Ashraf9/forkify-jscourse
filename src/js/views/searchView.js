@@ -1,4 +1,4 @@
-class searchView {
+class SearchView {
   #parentElement = document.querySelector('.search');
   getInputValue() {
     return this.#parentElement.querySelector('.search__field').value;
@@ -10,4 +10,4 @@ class searchView {
     });
   }
 }
-export default new searchView();
+export default new SearchView();

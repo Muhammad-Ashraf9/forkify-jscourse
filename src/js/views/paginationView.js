@@ -1,7 +1,7 @@
 import icons from '../../img/icons.svg';
 import View from './View';
 
-class paginationView extends View {
+class PaginationView extends View {
   constructor(parentElement) {
     super(parentElement);
   }
@@ -42,4 +42,4 @@ class paginationView extends View {
       return `${this.#generatePrevButton()}${this.#generateNextButton()}`;
   }
 }
-export default new paginationView(document.querySelector('.pagination'));
+export default new PaginationView(document.querySelector('.pagination'));
