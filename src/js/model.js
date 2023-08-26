@@ -91,7 +91,6 @@ export const deleteBookmark = function (recipeId) {
   localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
 };
 export const presistBookmarks = function () {
-  const bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
-  console.log('bookmarks :>> ', bookmarks);
-  if (bookmarks) state.bookmarks = bookmarks;
+  const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+  state.bookmarks = bookmarks;
 };
