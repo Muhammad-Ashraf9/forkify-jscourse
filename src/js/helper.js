@@ -15,17 +15,6 @@ export const wait = function (sec) {
   });
 };
 
-export const getJSON = async function (url) {
-  try {
-    const response = await Promise.race([fetch(url), timeout(REQUEST_TIMEOUT)]);
-    const data = await response.json();
-    console.log(data);
-    if (response.status !== 200) throw new Error("Couldn't fetch data.");
-    return data;
-  } catch (error) {
-    throw error;
-  }
-};
 export const AJAX = async function (url, jsonData = '') {
   try {
     const fetchPromise =
@@ -44,7 +33,6 @@ export const AJAX = async function (url, jsonData = '') {
     ]);
     if (!response.ok) throw new Error("Couldn't fetch data.");
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     throw error;

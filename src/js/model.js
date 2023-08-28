@@ -1,5 +1,5 @@
 import { API_KEY, API_URL, RECIPES_PER_PAGE } from './config';
-import { AJAX, getJSON } from './helper';
+import { AJAX } from './helper';
 
 export const state = {
   recipe: {},
@@ -114,6 +114,5 @@ export const uploadRecipe = async function (addedRecipe) {
     data: { recipe },
   } = await AJAX(`${API_URL}?key=${API_KEY}`, formattedUploadRecipe);
   formatAndStateRecipe(recipe);
-  console.log('state.recipe :>> ', state.recipe);
   addBookmark(state.recipe);
 };
