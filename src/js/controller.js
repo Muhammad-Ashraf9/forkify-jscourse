@@ -1,3 +1,4 @@
+import { timeout, wait } from './helper.js';
 import {
   addBookmark,
   deleteBookmark,
@@ -7,6 +8,7 @@ import {
   getSearchedRecipes,
   presistBookmarks,
   state,
+  uploadRecipe,
 } from './model.js';
 import addRecipeView from './views/addRecipeView.js';
 import bookmarksView from './views/bookmarksView.js';
@@ -59,12 +61,11 @@ const controlBookmark = function () {
   recipeView.update(state.recipe);
   bookmarksView.render(state.bookmarks);
 };
-const controlUploadRecipe = function (formData) {
-  console.log('formData :>> ', formData);
-  const uploadRecipeObject = {};
+function FormatRecipeUploadFormData(formData) {
+  const recipeObject = {};
   const ingredients = [];
-  for (const [key, value] of Object.entries(formData)) {
-    if (!key.startsWith('ingredient')) uploadRecipeObject[key] = value;
+  formData.forEach(([key, value]) => {
+    if (!key.startsWith('ingredient')) recipeObject[key] = value;
     if (key.startsWith('ingredient') && value.trim() !== '') {
       const ingredientArray = value.split(',');
       if (ingredientArray.length !== 3) throw Error('Wrong ingredient format.');
@@ -74,11 +75,26 @@ const controlUploadRecipe = function (formData) {
         description: ingredientArray[2],
       });
     }
-    // console.log(`${key}: ${value}`);
+  });
+  recipeObject.ingredients = ingredients;
+  return recipeObject;
+}
+const controlUploadRecipe = async function (...formData) {
+  addRecipeView.renderSpinner();
+  try {
+    const formattedRecipe = FormatRecipeUploadFormData(formData);
+    await uploadRecipe(formattedRecipe);
+    history.pushState(null, null, `#${state.recipe._id}`);
+    bookmarksView.render(state.bookmarks);
+    recipeView.render(state.recipe);
+    searchResultsView.update(getRecipesPerPage(state.search.pageNumber));
+    addRecipeView.renderSuccessMessage('Recipe Uploaded Successfully.😋');
+    await wait(2);
+    addRecipeView.closeModal();
+    addRecipeView.render(state);
+  } catch (error) {
+    addRecipeView.renderErrorMessage(error);
   }
-  uploadRecipeObject.ingredients = ingredients;
-  console.log(ingredients);
-  console.log(uploadRecipeObject);
 };
 const init = function () {
   presistBookmarks();

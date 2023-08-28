@@ -1,5 +1,5 @@
-import { API_URL, RECIPES_PER_PAGE } from './config';
-import { getJSON } from './helper';
+import { API_KEY, API_URL, RECIPES_PER_PAGE } from './config';
+import { AJAX, getJSON } from './helper';
 
 export const state = {
   recipe: {},
@@ -12,10 +12,24 @@ export const state = {
   },
   bookmarks: [],
 };
-
+const formatAndStateRecipe = function (recipe) {
+  state.recipe = {
+    _id: recipe.id,
+    title: recipe.title,
+    cookingTime: recipe.cooking_time,
+    imageUrl: recipe.image_url,
+    ingredients: recipe.ingredients,
+    publisher: recipe.publisher,
+    servings: recipe.servings,
+    sourceUrl: recipe.source_url,
+    bookmarked: false,
+  };
+};
 export const getRecipeData = async function (id) {
   try {
-    const { data: { recipe } = '' } = await getJSON(`${API_URL}${id}`);
+    const { data: { recipe } = '' } = await AJAX(
+      `${API_URL}${id}?key=${API_KEY}`
+    );
 
     if (!recipe) throw new Error('Recipe not found');
     state.recipe = {
@@ -39,8 +53,8 @@ export const getRecipeData = async function (id) {
 };
 export const getSearchedRecipes = async function (query) {
   try {
-    const { data: { recipes } = '' } = await getJSON(
-      `${API_URL}?search=${query}`
+    const { data: { recipes } = '' } = await AJAX(
+      `${API_URL}?search=${query}&key=${API_KEY}`
     );
     if (recipes.length === 0)
       throw new Error('No Recipes Found With This Category.');
@@ -78,8 +92,8 @@ export const getRecipeServings = function (servingsNumber) {
   state.recipe.servings = servingsNumber;
 };
 export const addBookmark = function (recipe) {
-  state.bookmarks.push(recipe);
   state.recipe.bookmarked = true;
+  state.bookmarks.push(recipe);
   localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
 };
 export const deleteBookmark = function (recipeId) {
@@ -93,4 +107,21 @@ export const deleteBookmark = function (recipeId) {
 export const presistBookmarks = function () {
   const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
   state.bookmarks = bookmarks;
+};
+export const uploadRecipe = async function (addedRecipe) {
+  const formattedUploadRecipe = {
+    title: addedRecipe.title,
+    cooking_time: addedRecipe.cookingTime,
+    image_url: addedRecipe.image,
+    ingredients: addedRecipe.ingredients,
+    publisher: addedRecipe.publisher,
+    servings: addedRecipe.servings,
+    source_url: addedRecipe.sourceUrl,
+  };
+  const {
+    data: { recipe },
+  } = await AJAX(`${API_URL}?key=${API_KEY}`, formattedUploadRecipe);
+  formatAndStateRecipe(recipe);
+  console.log('state.recipe :>> ', state.recipe);
+  addBookmark(state.recipe);
 };
