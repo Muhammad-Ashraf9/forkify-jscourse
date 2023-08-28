@@ -12,7 +12,7 @@ export const state = {
   },
   bookmarks: [],
 };
-const formatAndStateRecipe = function (recipe) {
+function formatAndStateRecipe(recipe) {
   state.recipe = {
     _id: recipe.id,
     title: recipe.title,
@@ -23,8 +23,9 @@ const formatAndStateRecipe = function (recipe) {
     servings: recipe.servings,
     sourceUrl: recipe.source_url,
     bookmarked: false,
+    ...(recipe.key && { key: recipe.key }),
   };
-};
+}
 export const getRecipeData = async function (id) {
   try {
     const { data: { recipe } = '' } = await AJAX(
@@ -32,17 +33,7 @@ export const getRecipeData = async function (id) {
     );
 
     if (!recipe) throw new Error('Recipe not found');
-    state.recipe = {
-      _id: recipe.id,
-      title: recipe.title,
-      cookingTime: recipe.cooking_time,
-      imageUrl: recipe.image_url,
-      ingredients: recipe.ingredients,
-      publisher: recipe.publisher,
-      servings: recipe.servings,
-      sourceUrl: recipe.source_url,
-      bookmarked: false,
-    };
+    formatAndStateRecipe(recipe);
 
     state.recipe.bookmarked = state.bookmarks.some(
       bookmark => bookmark._id === state.recipe._id
@@ -64,6 +55,7 @@ export const getSearchedRecipes = async function (query) {
         title: recipe.title,
         imageUrl: recipe.image_url,
         publisher: recipe.publisher,
+        ...(recipe.key && { key: recipe.key }),
       };
     });
     state.search.query = query;

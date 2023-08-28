@@ -5,9 +5,9 @@ export default class Preview extends View {
     super(parentElement, errorMessage, successMessage);
   }
   _generateMarkup() {
-    return this.data.map(this.#generateSearchResultsMarkup).join(' ');
+    return this.data.map(this.#generatePreviewMarkup).join(' ');
   }
-  #generateSearchResultsMarkup(recipe) {
+  #generatePreviewMarkup(recipe) {
     return `<li class="preview">
     <a class="preview__link  ${
       window.location.hash.slice(1) === recipe._id && 'preview__link--active'
@@ -19,9 +19,9 @@ export default class Preview extends View {
         <h4 class="preview__title">${recipe.title}</h4>
         <p class="preview__publisher">${recipe.publisher}</p>
         <div class="preview__user-generated">
-          <svg>
-            <use href=${icons}#icon-user"></use>
-          </svg>
+        <svg>
+        <use href="${icons}#${recipe.key && 'icon-user'}"></use>
+      </svg>
         </div>
       </div>
     </a>

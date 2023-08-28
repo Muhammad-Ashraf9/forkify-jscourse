@@ -28,6 +28,7 @@ class RecipeView extends View {
   //API
   // _ not # inheritance private enclosing class
   _generateMarkup() {
+    console.log('this.data.key :>> ', this.data?.key);
     return `  <figure class="recipe__fig">
     <img src="${this.data.imageUrl}" alt="Tomato" class="recipe__img" />
     <h1 class="recipe__title">
@@ -73,6 +74,9 @@ class RecipeView extends View {
     </div>
 
     <div class="recipe__user-generated">
+    <svg>
+    <use href="${icons}#${this.data.key && 'icon-user'}"></use>
+  </svg>
       
     </div>
     <button class="btn--round btn--bookmark">
