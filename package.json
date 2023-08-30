@@ -1,13 +1,14 @@
 {
   "name": "forkify-parcel",
   "version": "1.0.0",
-  "description": "",
+  "description": "Recipe application",
+  "default": "index.html",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ash",
   "license": "ISC",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.9.3",
@@ -16,5 +17,8 @@
     "parcel": "^2.9.3",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10"
+  },
+  "dependencies": {
+    "regenerator-runtime": "^0.14.0"
   }
 }

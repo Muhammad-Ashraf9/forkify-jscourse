@@ -1,3 +1,5 @@
+'use strict';
+import 'regenerator-runtime/runtime.js';
 import { timeout, wait } from './helper.js';
 import {
   addBookmark,
@@ -84,7 +86,7 @@ const controlUploadRecipe = async function (...formData) {
     recipeView.render(state.recipe);
     searchResultsView.update(getRecipesPerPage(state.search.pageNumber));
     addRecipeView.renderSuccessMessage('Recipe Uploaded Successfully.😋');
-    await wait(2);
+    await wait(1);
     addRecipeView.closeModal();
     addRecipeView.render(state);
   } catch (error) {
@@ -98,7 +100,7 @@ const init = function () {
   recipeView.addBookmarkHandler(controlBookmark);
   searchView.addSearchHandler(controlSearch);
   paginationView.addpaginationhandler(controlPagination);
-  bookmarksView.render(state.bookmarks);
   addRecipeView.addUploadRecipeHandler(controlUploadRecipe);
+  bookmarksView.render(state.bookmarks);
 };
 init();

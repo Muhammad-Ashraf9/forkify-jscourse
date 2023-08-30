@@ -49,7 +49,7 @@ export const getSearchedRecipes = async function (query) {
     );
     if (recipes.length === 0)
       throw new Error('No Recipes Found With This Category.');
-    mappedRecipes = recipes.map(recipe => {
+    const mappedRecipes = recipes.map(recipe => {
       return {
         _id: recipe.id,
         title: recipe.title,
